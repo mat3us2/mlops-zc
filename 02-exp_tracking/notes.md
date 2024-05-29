@@ -27,7 +27,32 @@ To run modified train.py:
 ```bash
 cd ~/mlops-zc/02-exp_tracking
 python train.py --data_path ~/notebooks/output/
+# min_samples_split = 2 (checked arguments to RandomForestRegressor function)
 ```
 
 
-Check MLflow UI
+Check MLflow UI...
+
+To run modified hpo.py:
+```bash
+cd ~/mlops-zc/02-exp_tracking
+mkdir artifacts
+mlflow ui --artifacts-destination artifacts --backend-store-uri sqlite:///mlflow.db
+## in another terminal:
+cd ~/mlops-zc/02-exp_tracking
+conda activate exp-tracking
+python hpo.py --data_path ~/notebooks/output/
+```
+
+Check script outpu or MLflow UI for lowes RMSE (5.335)
+
+
+To run modified register_model.py:
+```bash
+python register_model.py --data_path ~/notebooks/output/
+```
+
+Check script outpu or MLflow UI for lowes RMSE (5.335)
+
+
+
