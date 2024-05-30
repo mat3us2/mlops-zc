@@ -35,14 +35,18 @@ def run_optimization(data_path: str, num_trials: int):
 
     def objective(params):
 
-        rf = RandomForestRegressor(**params)
-        rf.fit(X_train, y_train)
-        y_pred = rf.predict(X_val)
-        rmse = root_mean_squared_error(y_val, y_pred)
+        with mlflow.start_run():
+            # Log the parameters
+            mlflow.log_params(params)
 
-        mlflow.log_metric("RMSE", rmse)
+            rf = RandomForestRegressor(**params)
+            rf.fit(X_train, y_train)
+            y_pred = rf.predict(X_val)
+            rmse = root_mean_squared_error(y_val, y_pred)
 
-        return {'loss': rmse, 'status': STATUS_OK}
+            mlflow.log_metric("RMSE", rmse)
+
+            return {'loss': rmse, 'status': STATUS_OK}
 
     search_space = {
         'max_depth': scope.int(hp.quniform('max_depth', 1, 20, 1)),
